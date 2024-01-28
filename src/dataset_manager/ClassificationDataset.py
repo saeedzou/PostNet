@@ -48,13 +48,13 @@ class ClassificationDataset(Dataset):
 
     def __getitem__(self, item):
         if len(self.input_dims) == 1:  # Vector data
-            x = (torch.from_numpy(self.X[item]).type(torch.DoubleTensor) - self.transform_min) / self.transform_max
+            x = (torch.from_numpy(self.X[item]).type(torch.float32) - self.transform_min) / self.transform_max
         elif len(self.input_dims) == 3 and self.input_dims[2] == 1:  # Image data with one channel
-            x = (torch.from_numpy(self.X[item]).type(torch.DoubleTensor) - self.transform_min) / self.transform_max
+            x = (torch.from_numpy(self.X[item]).type(torch.float32) - self.transform_min) / self.transform_max
             x = x.view(self.input_dims[2], self.input_dims[0], self.input_dims[1])
         elif len(self.input_dims) == 3 and self.input_dims[2] == 3:  # Image data with three channel
             input_reshaped = np.uint8(np.transpose(self.X[item].reshape(self.input_dims[2], self.input_dims[0], self.input_dims[1]), (1, 2, 0)))
-            x = torch.from_numpy(np.array(self.transform(input_reshaped), np.int32, copy=False)).type(torch.DoubleTensor)
+            x = torch.from_numpy(np.array(self.transform(input_reshaped), np.int32, copy=False)).type(torch.float32)
             x = (x - self.transform_min) / self.transform_max
             x = x.permute((2, 0, 1)).contiguous()
         else:

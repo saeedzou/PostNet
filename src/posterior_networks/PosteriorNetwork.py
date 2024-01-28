@@ -41,7 +41,7 @@ class PosteriorNetwork(nn.Module):
         super().__init__()
 
         torch.cuda.manual_seed(seed)
-        torch.set_default_tensor_type(torch.DoubleTensor)
+        torch.set_default_dtype(torch.float32)
 
         # Architecture parameters
         self.input_dims, self.output_dim, self.hidden_dims, self.kernel_dim, self.latent_dim = input_dims, output_dim, hidden_dims, kernel_dim, latent_dim

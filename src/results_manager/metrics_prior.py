@@ -7,7 +7,7 @@ from sklearn import metrics
 
 
 def accuracy(Y, alpha):
-    corrects = (Y.squeeze() == alpha.max(-1)[1]).type(torch.DoubleTensor)
+    corrects = (Y.squeeze() == alpha.max(-1)[1]).type(torch.float32)
     accuracy = corrects.sum() / corrects.size(0)
     return accuracy.cpu().detach().numpy()
 
