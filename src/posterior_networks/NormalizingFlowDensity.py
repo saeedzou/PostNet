@@ -2,6 +2,7 @@ import torch
 from pyro.distributions.transforms.planar import Planar
 from pyro.distributions.transforms.radial import Radial
 from pyro.distributions.transforms.affine_autoregressive import AffineAutoregressive, affine_autoregressive
+from pyro.distributions.transforms.affine_coupling import AffineCoupling, affine_coupling
 from torch import nn
 import torch.distributions as tdist
 
@@ -28,6 +29,10 @@ class NormalizingFlowDensity(nn.Module):
         elif self.flow_type == 'iaf_flow':
             self.transforms = nn.Sequential(*(
                 affine_autoregressive(dim, hidden_dims=[128, 128]) for _ in range(flow_length)
+            ))
+        elif self.flow_type == 'realnvp_flow':
+            self.transforms = nn.Sequential(*(
+                affine_coupling(dim, hidden_dims=[128, 128]) for _ in range(flow_length)
             ))
         else:
             raise NotImplementedError
